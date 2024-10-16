@@ -27,8 +27,7 @@ if st.button('Predict Final Diagnosis'):
     # Create a DataFrame with the input data
     input_data = pd.DataFrame({
         'Age': [age],
-        'Gender_M': [1 if gender == 'M' else 0],
-        'Gender_F': [1 if gender == 'F' else 0],
+        'Gender': [gender],
         'Baseline H₂ (ppm)': [baseline_h2],
         'Baseline CH₄ (ppm)': [baseline_ch4],
         'Peak H₂ (ppm)': [peak_h2],
@@ -37,6 +36,18 @@ if st.button('Predict Final Diagnosis'):
         'Time of Peak (minutes)': [time_of_peak],
         'Increase from Baseline (ppm)': [increase_from_baseline]
     })
+
+    # One-hot encode the 'Gender' column using the same approach as during training
+    input_data = pd.get_dummies(input_data, columns=['Gender'], drop_first=True)
+
+    # Ensure the input data has the same features as the training data
+    # This step adds any missing columns with a value of 0
+    for col in scaler.feature_names_in_:
+        if col not in input_data.columns:
+            input_data[col] = 0
+
+    # Reorder the columns to match the training set
+    input_data = input_data[scaler.feature_names_in_]
 
     # Standardize the input data using the saved scaler
     scaled_data = scaler.transform(input_data)
