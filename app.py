@@ -41,13 +41,15 @@ if st.button('Predict Final Diagnosis'):
     input_data = pd.get_dummies(input_data, columns=['Gender'], drop_first=True)
 
     # Ensure the input data has the same features as the training data
-    # This step adds any missing columns with a value of 0
     for col in scaler.feature_names_in_:
         if col not in input_data.columns:
             input_data[col] = 0
 
     # Reorder the columns to match the training set
     input_data = input_data[scaler.feature_names_in_]
+
+    # Handle any potential NaN values
+    input_data.fillna(0, inplace=True)
 
     # Standardize the input data using the saved scaler
     scaled_data = scaler.transform(input_data)
