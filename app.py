@@ -9,7 +9,7 @@ scaler = joblib.load('scaler.pkl')
 label_encoder = joblib.load('label_encoder.pkl')
 
 # Streamlit app title
-st.title('SIBO & IMO Prediction App')
+st.title('SIBO and IMO Prediction App')
 
 # Input fields for user to provide feature values
 age = st.number_input('Age', min_value=0, max_value=120, value=30, step=1)
