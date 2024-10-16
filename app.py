@@ -1,15 +1,14 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
 import joblib
 
 # Load the saved model, scaler, and label encoder
-model = joblib.load('final_diagnosis_model.pkl')
-scaler = joblib.load('scaler.pkl')
-label_encoder = joblib.load('label_encoder.pkl')
+model = joblib.load('final_diagnosis_model.pkl')       # Classifier model
+scaler = joblib.load('scaler.pkl')                     # Scaler for normalization
+label_encoder = joblib.load('label_encoder.pkl')       # Label encoder for target
 
 # Streamlit app title
-st.title('SIBO and IMO Prediction App')
+st.title('SIBO & IMO Prediction App')
 
 # Input fields for user to provide feature values
 age = st.number_input('Age', min_value=0, max_value=120, value=30, step=1)
@@ -27,32 +26,37 @@ if st.button('Predict Final Diagnosis'):
     # Create a DataFrame with the input data
     input_data = pd.DataFrame({
         'Age': [age],
-        'Gender': [gender],
         'Baseline H₂ (ppm)': [baseline_h2],
         'Baseline CH₄ (ppm)': [baseline_ch4],
         'Peak H₂ (ppm)': [peak_h2],
         'Peak CH₄ (ppm)': [peak_ch4],
         'Combined Peak (ppm)': [combined_peak],
         'Time of Peak (minutes)': [time_of_peak],
-        'Increase from Baseline (ppm)': [increase_from_baseline]
+        'Increase from Baseline (ppm)': [increase_from_baseline],
     })
+    
+    # One-hot encode the 'Gender' column
+    # input_data = pd.get_dummies(input_data, columns=['Gender'], drop_first=True)
+    
+    # Add additional categorical variables here if necessary
+    # For example: Combined Diagnosis, IMO, SIBO
 
-    # One-hot encode the 'Gender' column using the same approach as during training
-    input_data = pd.get_dummies(input_data, columns=['Gender'], drop_first=True)
+    # # Ensure all expected features are present
+    # # Get the feature names that the model was trained on
+    # trained_features = model.feature_names_in_
 
-    # Ensure the input data has the same features as the training data
-    for col in scaler.feature_names_in_:
-        if col not in input_data.columns:
-            input_data[col] = 0
+    # # Add missing columns with default value of 0
+    # for feature in trained_features:
+    #     if feature not in input_data.columns:
+    #         input_data[feature] = 0
 
-    # Reorder the columns to match the training set
-    input_data = input_data[scaler.feature_names_in_]
-
-    # Handle any potential NaN values
-    input_data.fillna(0, inplace=True)
+    # # Reorder the input data to match the trained feature order
+    # input_data = input_data[trained_features]
 
     # Standardize the input data using the saved scaler
     scaled_data = scaler.transform(input_data)
+    # input_data['Gender_M'] = [1 if gender == 'M' else 0]  # Create Gender_M column
+    print(input_data.columns)
 
     # Make predictions using the loaded model
     prediction = model.predict(scaled_data)
