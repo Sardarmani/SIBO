@@ -17,7 +17,7 @@ baseline_h2 = st.number_input('Baseline H₂ (ppm)', min_value=0.0, value=5.0, s
 baseline_ch4 = st.number_input('Baseline CH₄ (ppm)', min_value=0.0, value=2.0, step=0.1)
 peak_h2 = st.number_input('Peak H₂ (ppm)', min_value=0.0, value=74.0, step=0.1)
 peak_ch4 = st.number_input('Peak CH₄ (ppm)', min_value=0.0, value=21.0, step=0.1)
-combined_peak = st.number_input('Combined Peak (ppm)', min_value=0.0, value=95.0, step=0.1)
+combined_peak = peak_h2 + peak_ch4
 time_of_peak = st.number_input('Time of Peak (minutes)', min_value=0.0, value=100.0, step=0.1)
 increase_from_baseline = (peak_h2 + peak_ch4) - (baseline_h2 + baseline_ch4)
 # increase_from_baseline = st.number_input('Increase from Baseline (ppm)', min_value=0.0, value=90.0, step=0.1)
