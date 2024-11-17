@@ -77,5 +77,5 @@ if st.button('Predict Final Diagnosis'):
         st.write("**Suggestion**: The result indicates positivity for both SIBO and IMO.")
         st.write("**Suggestion for SIBO**: A rise of 20 ppm or more above the baseline within 100 minutes is considered positive for small intestinal bacterial overgrowth.")
         st.write("**Suggestion for IMO**: A level of at least 10 ppm at any time is considered positive for intestinal methanogen overgrowth.")
-        )
+        
     
