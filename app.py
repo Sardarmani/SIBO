@@ -67,3 +67,11 @@ if st.button('Predict Final Diagnosis'):
 
     # Display the prediction
     st.write(f'The predicted final diagnosis is: **{final_diagnosis[0]}**')
+
+     if final_diagnosis[0] == 'SIBO':
+        st.write("**Suggestion for SIBO**: A rise of 20 ppm or more above the baseline within 100 minutes is considered positive for small intestinal bacterial overgrowth.")
+    elif final_diagnosis[0] == 'IMO':
+        st.write("**Suggestion for IMO**: A level of at least 10 ppm at any time is considered positive for intestinal methanogen overgrowth.")
+    elif final_diagnosis[0] == 'Both':
+        st.write("**Suggestion**: The result indicates positivity for both SIBO and IMO.")
+    
